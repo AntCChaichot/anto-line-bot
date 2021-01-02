@@ -38,15 +38,6 @@ def callback():
 
     return 'OK'
 
-@app.route("/check")
-def check():
-	ret = requests.get('http://api.openweathermap.org/data/2.5/forecast?zip=10330,th&APPID=7743f38ce634083abe786e2d679955e3&units=metric')
-	d = dict(ret.json())
-	weather = dict()
-	for data in d['list'][0:6]:
-		weather = {'Date':data['dt_txt'], 'Temperature':data['main']['feels_like'], 'Humidity':data['main']['humidity'],'Description':data['weather'][0]['description']}
-	return weather
-
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
 	msg_from_usr = event.message.text
