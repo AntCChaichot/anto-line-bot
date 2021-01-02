@@ -51,7 +51,8 @@ def check():
 def handle_message(event):
 	msg_from_usr = event.message.text
 	msg_from_usr = msg_from_usr.strip().lower()
-	ret = requests.get('http://api.openweathermap.org/data/2.5/forecast?zip='+msg_from_usr+',th&APPID=7743f38ce634083abe786e2d679955e3&units=metric')
+	
+	ret = requests.get('http://api.openweathermap.org/data/2.5/forecast?zip='+msg_from_usr+environ['openweathermap_key'])
 	d = dict(ret.json())
 	current_weather = dict()
 	info = []
