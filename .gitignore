@@ -1,6 +1,4 @@
 **/__pycache__
 
 # python environments
-Anto-Line-Bot-Heroku/heroku-line-bot-env
-Anto-Line-Bot-Ngrok/Ngrok-line-bot-env
-Test-Line-Bot/TestLineBot
+./line-bot-project
