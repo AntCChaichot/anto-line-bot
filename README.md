@@ -1,5 +1,8 @@
 # My First LINE bot
 ## LINE bot for educational purpose using LINE Messaging API
+Requirements:
+  - LINE/ LINE developers accounts
+
 ### Heroku bot:
   - Displaying weather in Thailand according to Postal code (sent by users)
   - Check Covid-19 Patients (Total, Thailand, USA)
