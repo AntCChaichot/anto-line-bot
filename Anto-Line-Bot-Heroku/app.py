@@ -62,6 +62,7 @@ def handle_message(event):
   msg_from_usr = event.message.text
   msg_from_usr = msg_from_usr.strip().lower()
   if msg_from_usr == "covid":
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Getting Data, Please wait"))
     world_result, thailand_result, usa_result = call_data()
     line_bot_api.reply_message(
         event.reply_token,
