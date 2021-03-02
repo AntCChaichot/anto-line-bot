@@ -45,11 +45,14 @@ def callback():
 
     return 'OK'
 
-world_case = result.Scrapetest()
-with world_case as wc:
-  world_result = wc.get_world_cases()
-  thailand_result = wc.get_thailand_cases()
-  usa_result = wc.get_usa_cases()
+
+def call_data():
+  world_case = result.Scrapetest()
+  with world_case as wc:
+    world= wc.get_world_cases()
+    thailand= wc.get_thailand_cases()
+    usa= wc.get_usa_cases()
+  return (world, thailand, usa)
 
 
 
@@ -59,6 +62,7 @@ def handle_message(event):
   msg_from_usr = event.message.text
   msg_from_usr = msg_from_usr.strip().lower()
   if msg_from_usr == "covid":
+    world_result, thailand_result, usa_result = call_data()
     line_bot_api.reply_message(
         event.reply_token,
         [

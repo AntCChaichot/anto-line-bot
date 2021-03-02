@@ -51,8 +51,7 @@ class MainPage(BasePage):
     total_cases, dead_cases, recovered_cases = cases_info
     rv = f"""Total Cases around the World: {total_cases}
 Deaths around the World: {dead_cases}
-Recovered Cases around the World: {recovered_cases}
-          """
+Recovered Cases around the World: {recovered_cases}"""
     return rv
 
   def print_country_text(self, country_info: Tuple[str]) -> None:
@@ -67,8 +66,7 @@ Total Deaths: {deaths}
 Recovered Cases: {recovered}
 New Deaths: {new_deaths}
 ActiveCases: {active_cases}
-Critical Cases: {critical_cases}
-          """
+Critical Cases: {critical_cases}"""
     return rv
 
   #Alternative Printing Function 
