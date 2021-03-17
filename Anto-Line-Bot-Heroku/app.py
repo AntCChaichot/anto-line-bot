@@ -26,7 +26,7 @@ def setWebhook(CHANNEL_ACCESS_TOKEN):
   endpointFixed = "https://anto-line-bot.herokuapp.com/callback"
   url = "https://api.line.me/v2/bot/channel/webhook/endpoint"
   header = {'Content-Type': 'application/json',
-          'Authorization': 'Bearer' + CHANNEL_ACCESS_TOKEN}
+          'Authorization': 'Bearer ' + CHANNEL_ACCESS_TOKEN}
   body = json.dumps({'endpoint': endpointFixed})
   response = requests.put(url=url, data=body, headers=header)
   print(response)
