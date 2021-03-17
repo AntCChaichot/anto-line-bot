@@ -2,3 +2,6 @@
 
 # python environments
 /line-bot-project
+
+# LINE secrets
+/Anto-Line-Bot-Ngrok/covid_bot/start_flask.sh
