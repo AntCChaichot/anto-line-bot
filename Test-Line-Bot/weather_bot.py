@@ -1,3 +1,4 @@
+import requests
 from typing import List, Dict, Tuple
 import datetime
 
@@ -92,7 +93,7 @@ class weatherResult:
 
 something = weatherResult()
 try:
-  print(something.get_specific_date_data('06','03'))
+  print(something.get_specific_date_data('10','03'))
 except ValueError:
   print("No data on this date!")
 except TypeError:
