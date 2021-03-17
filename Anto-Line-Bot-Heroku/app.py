@@ -54,7 +54,7 @@ def callback():
 
 
 def process_body(original_body: str):
-  body = json.loads((original_body)
+  body = json.loads(original_body)
   body_data = [e for e in body['events']]
   dest = body['destination']
   event_type = body_data[0]['type']
