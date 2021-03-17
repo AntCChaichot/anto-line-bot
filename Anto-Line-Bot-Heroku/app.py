@@ -50,6 +50,7 @@ def callback():
     print("# Webhook event:\n","-"*100,body)
     print("-"*100)
     LINE_DESTINATION_ID = "U831b6e5d5cdb92a590017c20bb007ab8"
+    global userId
     try:
       userId, text, reply_token, destination = process_body(body)
       assert LINE_DESTINATION_ID == destination
