@@ -38,11 +38,15 @@ def callback():
     print("# Webhook event:\n","-"*100,body)
     print("-"*100)
     LINE_DESTINATION_ID = "U831b6e5d5cdb92a590017c20bb007ab8"
-    userId, text, reply_token, destination = process_body(body)
-    assert LINE_DESTINATION_ID == destination
-    print("-"*100)
-    print(f"User ID: {userId} \nText: {text} \n Reply Token: {reply_token}")
-
+    try:
+      userId, text, reply_token, destination = process_body(body)
+      assert LINE_DESTINATION_ID == destination
+      print(f"User ID: {userId} \nText: {text} \n Reply Token: {reply_token}")
+      print("-"*100)
+    except ValueError: #not enough items when returned to unpack (only dest)
+      destination = process_body(body)
+      assert LINE_DESTINATION_ID == destination
+      print("Webhook Verification is successful")
     # handle webhook body
     try:
         handler.handle(body, signature)
@@ -68,6 +72,8 @@ def process_body(original_body: str):
       return
   except UnboundLocalError:
     return
+  except IndexError: # for verifying (no items in events)
+    return dest
   return (userid, message_text, token, dest)
 
 

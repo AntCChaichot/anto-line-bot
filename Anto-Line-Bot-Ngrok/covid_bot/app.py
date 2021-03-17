@@ -101,10 +101,15 @@ def create_app():
     LINE_DESTINATION_ID = "U831b6e5d5cdb92a590017c20bb007ab8"
     global userId
     #global text
-    userId, text, reply_token, destination = process_body(body)
-    assert LINE_DESTINATION_ID == destination
-    print('-'*70)
-    print(f"User ID: {userId} \nText: {text} \nReply Token: {reply_token}")
+    try:
+      userId, text, reply_token, destination = process_body(body)
+      assert LINE_DESTINATION_ID == destination
+      print('-'*70)
+      print(f"User ID: {userId} \nText: {text} \nReply Token: {reply_token}")
+    except ValueError: #not enough items when returned (only dest)
+      destination = process_body(body)
+      assert LINE_DESTINATION_ID == destination
+      print("Webhook Verification is successful")
     # handle webhook body
     try:
       handler.handle(body, signature)
@@ -118,8 +123,8 @@ def create_app():
     body = json.loads(original_body)
     body_data = [e for e in body['events']]
     dest = body['destination']
-    event_type = body_data[0]['type']
     try:
+      event_type = body_data[0]['type']
       token = body_data[0]['replyToken']
       userid = body_data[0]['source']['userId']
       message = body_data[0]['message']
@@ -129,6 +134,8 @@ def create_app():
         return
     except UnboundLocalError:
       return
+    except IndexError: # for verifying (no items in events)
+      return dest
     return (userid, message_text, token, dest)
 
   def call_data():
