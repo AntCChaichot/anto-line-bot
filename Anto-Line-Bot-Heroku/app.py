@@ -22,6 +22,18 @@ app = Flask(__name__)
 line_bot_api = LineBotApi(environ['MY_CHANNEL_ACCESS_TOKEN'])
 handler = WebhookHandler(environ['MY_CHANNEL_SECRET'])
 
+def setWebhook(CHANNEL_ACCESS_TOKEN):
+  endpointFixed = "https://anto-line-bot.herokuapp.com/callback"
+  url = "https://api.line.me/v2/bot/channel/webhook/endpoint"
+  header = {'Content-Type': 'application/json',
+          'Authorization': 'Bearer' + CHANNEL_ACCESS_TOKEN}
+  body = json.dumps({'endpoint': endpointFixed})
+  response = requests.put(url=url, data=body, headers=header)
+  print(response)
+  obj = json.loads(response.text)
+  print(obj)
+
+setWebhook(environ['MY_CHANNEL_ACCESS_TOKEN'])
 
 @app.route("/")
 def home():
@@ -61,8 +73,8 @@ def process_body(original_body: str):
   body = json.loads(original_body)
   body_data = [e for e in body['events']]
   dest = body['destination']
-  event_type = body_data[0]['type']
   try:
+    event_type = body_data[0]['type']
     token = body_data[0]['replyToken']
     userid = body_data[0]['source']['userId']
     message = body_data[0]['message']
