@@ -1,1 +1,1 @@
-web: cd Anto-Line-Bot-Heroku && flask run --host=0.0.0.0
+web: cd Anto-Line-Bot-Heroku && gunicorn -w 2 "app:create_app()"
