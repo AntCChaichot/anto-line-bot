@@ -1,1 +1,1 @@
-web: cd Anto-Line-Bot-Heroku && python3 app.py
+web: cd Anto-Line-Bot-Heroku && flask run

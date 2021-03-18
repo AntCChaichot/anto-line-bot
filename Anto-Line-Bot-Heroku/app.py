@@ -17,30 +17,31 @@ import result
 import requests, json
 from typing import Dict
 
-app = Flask(__name__)
+def create_app():
+  app = Flask(__name__)
 
-line_bot_api = LineBotApi(environ['MY_CHANNEL_ACCESS_TOKEN'])
-handler = WebhookHandler(environ['MY_CHANNEL_SECRET'])
+  line_bot_api = LineBotApi(environ['MY_CHANNEL_ACCESS_TOKEN'])
+  handler = WebhookHandler(environ['MY_CHANNEL_SECRET'])
 
-def setWebhook(CHANNEL_ACCESS_TOKEN):
-  endpointFixed = "https://anto-line-bot.herokuapp.com/callback"
-  url = "https://api.line.me/v2/bot/channel/webhook/endpoint"
-  header = {'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + CHANNEL_ACCESS_TOKEN}
-  body = json.dumps({'endpoint': endpointFixed})
-  response = requests.put(url=url, data=body, headers=header)
-  print(response)
-  obj = json.loads(response.text)
-  print(obj)
+  def setWebhook(CHANNEL_ACCESS_TOKEN):
+    endpointFixed = "https://anto-line-bot.herokuapp.com/callback"
+    url = "https://api.line.me/v2/bot/channel/webhook/endpoint"
+    header = {'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + CHANNEL_ACCESS_TOKEN}
+    body = json.dumps({'endpoint': endpointFixed})
+    response = requests.put(url=url, data=body, headers=header)
+    print(response)
+    obj = json.loads(response.text)
+    print(obj)
 
-setWebhook(environ['MY_CHANNEL_ACCESS_TOKEN'])
+  setWebhook(environ['MY_CHANNEL_ACCESS_TOKEN'])
 
-@app.route("/")
-def home():
+  @app.route("/")
+  def home():
     return "<h1>Hello, this is Anto's line bot!</h1>"
 
-@app.route("/callback", methods=['POST'])
-def callback():
+  @app.route("/callback", methods=['POST'])
+  def callback():
     # get X-Line-Signature header value
     signature = request.headers['X-Line-Signature']
 
@@ -70,45 +71,43 @@ def callback():
     return 'OK'
 
 
-def process_body(original_body: str):
-  body = json.loads(original_body)
-  body_data = [e for e in body['events']]
-  dest = body['destination']
-  try:
-    event_type = body_data[0]['type']
-    token = body_data[0]['replyToken']
-    userid = body_data[0]['source']['userId']
-    message = body_data[0]['message']
-    if message['type'] == 'text':
-      message_text = message['text']
-    else:
+  def process_body(original_body: str):
+    body = json.loads(original_body)
+    body_data = [e for e in body['events']]
+    dest = body['destination']
+    try:
+      event_type = body_data[0]['type']
+      token = body_data[0]['replyToken']
+      userid = body_data[0]['source']['userId']
+      message = body_data[0]['message']
+      if message['type'] == 'text':
+        message_text = message['text']
+      else:
+        return
+    except UnboundLocalError:
       return
-  except UnboundLocalError:
-    return
-  except IndexError: # for verifying (no items in events)
-    return dest
-  return (userid, message_text, token, dest)
+    except IndexError: # for verifying (no items in events)
+      return dest
+    return (userid, message_text, token, dest)
 
 
-def call_data():
-  world_case = result.Scrapetest()
-  with world_case as wc:
-    world= wc.get_world_cases()
-    thailand= wc.get_thailand_cases()
-    usa= wc.get_usa_cases()
-  return (world, thailand, usa)
+  def call_data():
+    world_case = result.Scrapetest()
+    with world_case as wc:
+      world= wc.get_world_cases()
+      thailand= wc.get_thailand_cases()
+      usa= wc.get_usa_cases()
+    return (world, thailand, usa)
 
 
-
-
-@handler.add(MessageEvent, message=TextMessage)
-def handle_message(event):
-  msg_from_usr = event.message.text
-  msg_from_usr = msg_from_usr.strip().lower()
-  if msg_from_usr == "covid":
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Getting Data, Please wait"))
-    world_result, thailand_result, usa_result = call_data()
-    line_bot_api.push_message(
+  @handler.add(MessageEvent, message=TextMessage)
+  def handle_message(event):
+    msg_from_usr = event.message.text
+    msg_from_usr = msg_from_usr.strip().lower()
+    if msg_from_usr == "covid":
+      line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Getting Data, Please wait"))
+      world_result, thailand_result, usa_result = call_data()
+      line_bot_api.push_message(
         userId,
         [
         TextSendMessage(text=world_result),
@@ -117,12 +116,13 @@ def handle_message(event):
         TextSendMessage(text="Stay Safe!")
         ]
         )
-  elif msg_from_usr == 'hi':
-    line_bot_api.reply_message(
+    elif msg_from_usr == 'hi':
+      line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text="'sup")
         )
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT",5000))
-    app.run(host = '0.0.0.0', port=port)
+  return app
+      #if __name__ == "__main__":
+    #port = int(os.environ.get("PORT",5000))
+   # app.run(host = '0.0.0.0', port=port)
