@@ -9,7 +9,7 @@ import datetime
 
 class weatherResult:
   def __init__(self):
-    self.ret = requests.get('http://api.openweathermap.org/data/2.5/forecast?zip=10540,th&APPID=7743f38ce634083abe786e2d679955e3&units=metric')
+    self.ret = requests.get('YOUR_OPENWEATHERMAP_TOKEN')
     self.data = dict(self.ret.json())
     self.country = self.data['city']['country']
     self.city = self.data['city']['name']

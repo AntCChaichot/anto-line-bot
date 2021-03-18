@@ -3,5 +3,7 @@
 # python environments
 /line-bot-project
 
-# LINE secrets
+# Secrets
 /Anto-Line-Bot-Ngrok/covid_bot/start_flask.sh
+/Test-Line-Bot/openweathermap_token.txt
+/Test-Line-Bot/my_weather_bot.py

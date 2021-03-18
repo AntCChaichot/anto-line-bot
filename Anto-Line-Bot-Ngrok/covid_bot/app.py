@@ -109,7 +109,7 @@ def create_app():
     except ValueError: #not enough items when returned (only dest)
       destination = process_body(body)
       assert LINE_DESTINATION_ID == destination
-      print("Webhook Verification is successful")
+      print("Webhook Verification successful")
     # handle webhook body
     try:
       handler.handle(body, signature)
