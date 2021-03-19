@@ -1,4 +1,4 @@
-from flask import Flask, request, abort, jsonify
+from flask import Flask, request, abort 
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -17,9 +17,10 @@ import os
 from os import environ
 import sys
 
-from typing import Dict
+from typing import Dict, Tuple
 
-import result
+import result # for covid
+from weather import weatherResult # for weather
 
 # run with "source start_flask.sh"
 def create_app():
@@ -100,7 +101,6 @@ def create_app():
     app.logger.info("Request body: " + body)
     LINE_DESTINATION_ID = "U831b6e5d5cdb92a590017c20bb007ab8"
     global userId
-    #global text
     try:
       userId, text, reply_token, destination = process_body(body)
       assert LINE_DESTINATION_ID == destination
@@ -128,7 +128,7 @@ def create_app():
       token = body_data[0]['replyToken']
       userid = body_data[0]['source']['userId']
       message = body_data[0]['message']
-      if message['type'] == 'text':
+      if message['type'] == 'text': #process message type response
         message_text = message['text']
       else:
         return
@@ -138,7 +138,7 @@ def create_app():
       return dest
     return (userid, message_text, token, dest)
 
-  def call_data():
+  def call_covid_data() -> Tuple[str]:
     world_case = result.Scrapetest()
     with world_case as wc:
       world= wc.get_world_cases()
@@ -146,10 +146,17 @@ def create_app():
       usa= wc.get_usa_cases()
     return (world, thailand, usa)
 
-  #clock = time.ctime()
-#split_clock = clock.split(' ')
-#time_info = [t for t in split_clock if ':' in t]
-#current_time = time_info[0]
+
+  def call_weather_all_data(zipcode: str, input_country: str = 'th') -> Dict[str, list]:
+    all_weather = weatherResult(zipcode, input_country)
+    all_data = all_weather.get_all_data()
+    return all_data
+
+  def thai_zipcode_list():
+    with open("thai_zipcodes.json", "r") as zc_file:
+      zc = [e.strip().split("\"")[3] for e in zc_file if "zip" in e]
+    return zc
+
 
   @handler.add(MessageEvent, message=TextMessage)
   def handle_message(event):
@@ -157,7 +164,7 @@ def create_app():
     msg_from_usr = msg_from_usr.strip().lower()
     if msg_from_usr == 'covid':
       line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Getting Data, Hang in there!"))
-      world_result, thailand_result, usa_result = call_data()
+      world_result, thailand_result, usa_result = call_covid_data()
       line_bot_api.push_message(
         userId,
         [
@@ -172,12 +179,60 @@ def create_app():
         event.reply_token,
         [
         TextSendMessage(text="'sup"),
-        TextSendMessage(text="How are you?"),
-        TextSendMessage(text="eiei")
+        TextSendMessage(text="How are you?")
         ]
         )
-  #elif text == 'hello':
-      #line_bot_api.reply_message(event.reply_token, TextSendMessage(text=text))
+      #elif msg_from_usr in thai_zipcode_list():
+    else:
+      try:
+        zc, coun = msg_from_usr.split(" ")
+        weather_data = call_weather_all_data(zc, coun)
+      except ValueError: #only zipcode is passed in
+        weather_data = call_weather_all_data(msg_from_usr)
+      try:
+        line_bot_api.reply_message(
+          event.reply_token,
+          [
+          TextSendMessage(text=f"Country: {weather_data['Country']} \nCity: {weather_data['City']}"),
+          TextSendMessage(text=f"""Date: {weather_data['Weather'][0][0]} 
+Temperature: {weather_data['Weather'][0][1]}
+Feels Like: {weather_data['Weather'][0][2]}
+Humidity: {weather_data['Weather'][0][3]}
+Description: {weather_data['Weather'][0][4]}"""
+          ),
+          TextSendMessage(text=f"""Date: {weather_data['Weather'][1][0]} 
+Temperature: {weather_data['Weather'][1][1]}
+Feels Like: {weather_data['Weather'][1][2]}
+Humidity: {weather_data['Weather'][1][3]}
+Description: {weather_data['Weather'][1][4]}"""
+          ),
+          TextSendMessage(text=f"""Date: {weather_data['Weather'][2][0]} 
+Temperature: {weather_data['Weather'][2][1]}
+Feels Like: {weather_data['Weather'][2][2]}
+Humidity: {weather_data['Weather'][2][3]}
+Description: {weather_data['Weather'][2][4]}"""
+          ),
+          TextSendMessage(text=f"""Date: {weather_data['Weather'][3][0]} 
+Temperature: {weather_data['Weather'][3][1]}
+Feels Like: {weather_data['Weather'][3][2]}
+Humidity: {weather_data['Weather'][3][3]}
+Description: {weather_data['Weather'][3][4]}"""
+          )
+          ]
+          )
+      except TypeError: #returned none or message is something else
+        line_bot_api.reply_message(
+            event.reply_token,
+            [
+              TextSendMessage(text="Sorry, I do not understand the message because: \n  - Data may not be found in the system! \n  - It's not code-acceptable yet \nHave your message back :D"),
+            TextSendMessage(text=event.message.text)
+            ]
+            )
+      #else:
+      #line_bot_api.reply_message(
+      #    event.reply_token,
+      #   TextSendMessage(text=event.message.text)
+      #    )
 
   return app
 

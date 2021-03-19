@@ -2,11 +2,6 @@ import requests
 from typing import List, Dict, Tuple
 import datetime
 
-
-#weather = {'Country':info[0], 'Name':info[1],'2':info[2],'3':info[3],'4':info[4],'5':info[5],'6':info[6]}
-#	TextSendMessage(text="Country: " + str(weather['Country']) + "\nName: " + str(weather['Name'])),
-#	TextSendMessage(text="Date/Time: " + str(weather['2'][0]) + "\nTemperature: " + str(weather['2'][1]) + "\nHumidity: " + str(weather['2'][2]) + "\nDescription: " + str(weather['2'][3])),		TextSendMessage(text="Date/Time: " + str(weather['3'][0]) + "\nTemperature: " + str(weather['3'][1]) + "\nHumidity: " + str(weather['3'][2]) + "\nDescription: " + str(weather['3'][3])),		TextSendMessage(text="Date/Time: " + str(weather['4'][0]) + "\nTemperature: " + str(weather['4'][1]) + "\nHumidity: " + str(weather['4'][2]) + "\nDescription: " + str(weather['4'][3])),		TextSendMessage(text="Date/Time: " + str(weather['5'][0]) + "\nTemperature: " + str(weather['5'][1]) + "\nHumidity: " + str(weather['5'][2]) + "\nDescription: " + str(weather['5'][3]))
-
 class weatherResult:
   def __init__(self):
     self.ret = requests.get('YOUR_OPENWEATHERMAP_TOKEN')

@@ -1,12 +1,16 @@
 # My First LINE bot
 ## LINE bot for educational purpose using LINE Messaging API
 ### Requirements:
-  - LINE/ LINE developers accounts
-
+  - LINE/ LINE developers accounts (https://developers.line.biz/en/)
+  - Python 3.X.X
+  - install requirements with pip first 
 ### Heroku bot:
-  - Displaying weather in Thailand according to Postal code (sent by users)
-  - Check Covid-19 Patients (Total, Thailand, USA)
-### Ngrok bot:
-  - Echo what the message input is
-  - export LINE_CHANNEL_SECRET=YOUR_LINE_CHANNEL_SECRET
-  - export LINE_CHANNEL_ACCESS_TOKEN=YOUR_LINE_CHANNEL_ACCESS_TOKEN
+  - Display weather according to Postal code (sent by users, format: "<zipcode> <two-letter-country>") from any country
+  - Check Covid-19 Patients
+### Ngrok bot (For Testing before deploying) :
+  - Does same as Heroku bot but can be run on your PC, Laptop
+    - Run automatically with bash scripts from Anto-Line-Bot-Ngrok/covid_bot directory
+    ```bash
+    # Replace variables in the script first, then run:
+    source run_flask_sample.sh
+    ```

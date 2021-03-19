@@ -26,15 +26,15 @@ class CountryCases:
 
   @classmethod
   def get_thailand_info(cls) -> Tuple[str]:
-    Thailand_Title = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[121]/td[2]')
-    Thailand_Population = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[121]/td[14]')
-    Thailand_Total_Cases = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[121]/td[3]')
-    Thailand_New_Cases = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[121]/td[4]')
-    Thailand_Deaths = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[121]/td[5]')
-    Thailand_Recovered = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[121]/td[7]')
-    Thailand_New_Deaths = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[121]/td[6]')
-    Thailand_Active_Cases = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[121]/td[8]')
-    Thailand_Critical_Cases = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[121]/td[9]')
+    Thailand_Title = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[123]/td[2]')
+    Thailand_Population = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[123]/td[14]')
+    Thailand_Total_Cases = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[123]/td[3]')
+    Thailand_New_Cases = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[123]/td[4]')
+    Thailand_Deaths = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[123]/td[5]')
+    Thailand_Recovered = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[123]/td[7]')
+    Thailand_New_Deaths = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[123]/td[6]')
+    Thailand_Active_Cases = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[123]/td[8]')
+    Thailand_Critical_Cases = (By.XPATH, '/html/body/div[3]/div[3]/div/div[4]/div[1]/div/table/tbody[1]/tr[123]/td[9]')
     thailand_info = (Thailand_Title, Thailand_Population, Thailand_Total_Cases, Thailand_New_Cases, Thailand_Deaths, Thailand_Recovered, Thailand_New_Deaths, Thailand_Active_Cases, Thailand_Critical_Cases)
     return thailand_info
 
