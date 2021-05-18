@@ -76,7 +76,7 @@ Critical Cases: {critical_cases}"""
   #  print('Recovered Cases around the World: ', recovered)
 
   def title_match(self) -> bool:
-    return 'coronavirus update' in self.driver.title.strip().lower()
+    return 'covid live update' in self.driver.title.strip().lower()
 
 class storeData(BasePage):
 
