@@ -104,8 +104,10 @@ def create_app():
     try:
       userId, text, reply_token, destination = process_body(body)
       assert LINE_DESTINATION_ID == destination
+      profile = line_bot_api.get_profile(userId)
       print('-'*70)
-      print(f"User ID: {userId} \nText: {text} \nReply Token: {reply_token}")
+      print(f"User ID: {userId} \nText: {text} \nReply Token: {reply_token} \nName: {profile.display_name}")
+      print('-'*70)
     except ValueError: #not enough items when returned (only dest)
       destination = process_body(body)
       assert LINE_DESTINATION_ID == destination
@@ -162,7 +164,7 @@ def create_app():
   def handle_message(event):
     msg_from_usr = event.message.text
     msg_from_usr = msg_from_usr.strip().lower()
-    if msg_from_usr == 'covid':
+    if msg_from_usr == 'covid' or 'โควิด':
       line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Getting Data, Hang in there!"))
       world_result, thailand_result, usa_result = call_covid_data()
       line_bot_api.push_message(
@@ -174,7 +176,7 @@ def create_app():
         TextSendMessage(text="Stay Safe!")
         ]
         )
-    elif msg_from_usr == 'hi':
+    elif msg_from_usr == 'hi' or 'สวัสดี':
       line_bot_api.reply_message(
         event.reply_token,
         [
