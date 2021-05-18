@@ -21,6 +21,7 @@ class Scrapetest:
   def get_thailand_cases(self):
     thailandInfo = page.MainPage(self.driver)
     assert thailandInfo.title_match()
+    thailandInfo.click_sort_country()
     return thailandInfo.thailand_case
 
   def get_usa_cases(self):

@@ -1,4 +1,6 @@
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 from typing import Tuple
 from locators import *
 
@@ -23,9 +25,9 @@ class MainPage(BasePage):
   @property
   def thailand_case(self) -> str:
     driver = self.driver
-    WebDriverWait(driver,10).until(
-      lambda driver: driver.find_element_by_class_name('maincounter-number')
-        )
+    #WebDriverWait(driver,10).until(
+    #    lambda driver: driver.find_element_by_class_name('maincounter-number')
+    #    )
     thailand_elements = CountryCases.get_thailand_info() #import from locators
     thailand_xpaths_info = CountryCases.get_country_info(*thailand_elements)
     thailand_raw_info = storeData(driver)
@@ -36,9 +38,9 @@ class MainPage(BasePage):
   @property
   def usa_case(self) -> str:
     driver = self.driver
-    WebDriverWait(driver,10).until(
-      lambda driver: driver.find_element_by_class_name('maincounter-number')
-        )
+    #WebDriverWait(driver,10).until(
+    #  lambda driver: driver.find_element_by_class_name('maincounter-number')
+    #    )
     usa_elements = CountryCases.get_usa_info()
     usa_xpaths_info = CountryCases.get_country_info(*usa_elements)
     usa_raw_info = storeData(driver)
@@ -51,8 +53,7 @@ class MainPage(BasePage):
     total_cases, dead_cases, recovered_cases = cases_info
     rv = f"""Total Cases around the World: {total_cases}
 Deaths around the World: {dead_cases}
-Recovered Cases around the World: {recovered_cases}
-          """
+Recovered Cases around the World: {recovered_cases}"""
     return rv
 
   def print_country_text(self, country_info: Tuple[str]) -> None:
@@ -67,8 +68,7 @@ Total Deaths: {deaths}
 Recovered Cases: {recovered}
 New Deaths: {new_deaths}
 Active Cases: {active_cases}
-Critical Cases: {critical_cases}
-          """
+Critical Cases: {critical_cases}"""
 
     return rv
    
@@ -79,7 +79,14 @@ Critical Cases: {critical_cases}
   #  print('Recovered Cases around the World: ', recovered)
 
   def title_match(self) -> bool:
-    return 'coronavirus update' in self.driver.title.strip().lower()
+    return 'covid live update' in self.driver.title.strip().lower()
+
+  def click_sort_country(self) -> None:
+      driver = self.driver
+      accept_cookie = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div/a')))
+      accept_cookie.click()
+      sort_button = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[3]/div[3]/div/div[6]/div[1]/div/table/thead/tr/th[2]')))
+      sort_button.click()
 
 class storeData(BasePage):
 
