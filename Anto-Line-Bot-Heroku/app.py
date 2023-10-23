@@ -136,6 +136,14 @@ def create_app():
         TextSendMessage(text="How are you?")
         ]
         )
+    elif msg_from_usr == "note" or msg_from_usr == "Note":
+        line_bot_api.reply_message(
+          event.reply_token,
+          [
+            TextSendMessage(text="Here's the note for you\n"),
+            TextSendMessage(text=event.message.text)
+          ]
+        )
     else:
       try:
         zc, coun = msg_from_usr.split(" ")
